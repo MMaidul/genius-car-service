@@ -1,0 +1,26 @@
+.service__box {
+    border: 1px solid gray;
+    width: 360px;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 10px;
+
+}
+
+.service__content {
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.service__btn {
+    border: none;
+    padding: 8px 10px;
+    border-radius: 10px;
+    background-color: rgb(140, 140, 223);
+    color: #fff;
+    cursor: pointer;
+}
+
+.service__btn:hover {
+    background-color: blue;
+}

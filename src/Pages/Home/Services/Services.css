@@ -1,0 +1,10 @@
+.services__title {
+    text-align: center;
+    color: rgb(84, 84, 250);
+}
+
+.services__container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-row-gap: 60px;
+}
