@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth'
 import './Register.css';
 import auth from '../../Firebase/Firebase.init';
+import SocialLogin from '../Login/SocialLogin/SocialLogin';
 
 const Register = () => {
 
@@ -39,6 +40,7 @@ const Register = () => {
                     className="text-danger text-decoration-none"
                 >Login</Link>
             </p>
+            <SocialLogin />
         </div>
     );
 };
