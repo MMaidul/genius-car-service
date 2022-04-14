@@ -62,8 +62,6 @@ const Login = () => {
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
                     <Form.Control ref={passwordRef} type="password" placeholder="Password" required />
-                    <input type="checkbox" name="terms" id="terms" />
-                    <label htmlFor="terms">Accept Genius Car Terms All Condition</label>
                 </Form.Group>
                 <Button className='w-100' variant="primary" type="submit">
                     Login
