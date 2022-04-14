@@ -24,7 +24,14 @@ const Login = () => {
     if (user) {
         navigate(from, { replace: true })
     }
-
+    let errorElement;
+    if (error) {
+        errorElement = (
+            <div>
+                <p className='text-danger'>Error: {error}</p>
+            </div>
+        );
+    }
     const handleSubmit = e => {
         e.preventDefault();
         const email = emailRef.current.value;
@@ -55,6 +62,7 @@ const Login = () => {
                     Submit
                 </Button>
             </Form>
+            {error}
             <p className='text-center pt-3'>New to Genius Car?
                 <Link to={'/register'}
                     onClick={navigateRegister}
