@@ -1,11 +1,13 @@
+import { async } from '@firebase/util';
 import React, { useRef } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useSendPasswordResetEmail, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../Firebase/Firebase.init';
 import SocialLogin from './SocialLogin/SocialLogin';
 
 const Login = () => {
+
 
     const location = useLocation();
     const from = location.state?.from?.pathname || "/"
@@ -17,6 +19,8 @@ const Login = () => {
         error,
     ] = useSignInWithEmailAndPassword(auth);
 
+    const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
+
     const emailRef = useRef('');
     const passwordRef = useRef('');
 
@@ -24,23 +28,27 @@ const Login = () => {
     if (user) {
         navigate(from, { replace: true })
     }
-    let errorElement;
-    if (error) {
-        errorElement = (
-            <div>
-                <p className='text-danger'>Error: {error}</p>
-            </div>
-        );
-    }
+
     const handleSubmit = e => {
         e.preventDefault();
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
         signInWithEmailAndPassword(email, password)
     }
+    let errorElement;
+    if (error) {
+        console.log(error);
+        errorElement = <p className='text-danger'>Your password is wrong</p>
+
+    }
 
     const navigateRegister = () => {
         navigate('/register')
+    }
+    const restPassword = async () => {
+        const email = emailRef.current.value;
+        await sendPasswordResetEmail(email)
+        alert('Sent Email')
     }
     return (
         <div className='container w-50 mx-auto my-5'>
@@ -54,20 +62,25 @@ const Login = () => {
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
                     <Form.Control ref={passwordRef} type="password" placeholder="Password" required />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                    <Form.Check type="checkbox" label="Check me out" />
+                    <input type="checkbox" name="terms" id="terms" />
+                    <label htmlFor="terms">Accept Genius Car Terms All Condition</label>
                 </Form.Group>
                 <Button className='w-100' variant="primary" type="submit">
-                    Submit
+                    Login
                 </Button>
             </Form>
-            {error}
+            {errorElement}
             <p className='text-center pt-3'>New to Genius Car?
                 <Link to={'/register'}
                     onClick={navigateRegister}
                     className="text-danger text-decoration-none"
                 >Please Register</Link>
+            </p>
+            <p className='text-center pt-3'>Forget Password?
+                <Link to={'/register'}
+                    onClick={restPassword}
+                    className="text-danger text-decoration-none"
+                >Rest Password</Link>
             </p>
             <SocialLogin />
         </div>
