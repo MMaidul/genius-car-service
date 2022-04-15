@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth'
+import { useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-firebase-hooks/auth'
 import './Register.css';
 import auth from '../../Firebase/Firebase.init';
 import SocialLogin from '../Login/SocialLogin/SocialLogin';
+import Loading from '../Shared/Loading/Loading';
 
 const Register = () => {
 
@@ -15,21 +16,31 @@ const Register = () => {
         user,
         loading,
         error,
-    ] = useCreateUserWithEmailAndPassword(auth);
+    ] = useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
+    const [updateProfile, updating, errorUpdate] = useUpdateProfile(auth);
+
+    if (loading || updating) {
+        return <Loading />
+    }
+    if (user) {
+        console.log(user);
+    }
     if (error) {
         console.log(error);
     }
-    const handleRegister = e => {
+    const handleRegister = async (e) => {
         e.preventDefault();
         const name = e.target.name.value;
         const email = e.target.email.value;
         const password = e.target.password.value;
-        // const agree = e.target.terms.checked;
 
-        if (agree) {
-            createUserWithEmailAndPassword(email, password)
-            navigate('/home')
-        }
+
+
+        await createUserWithEmailAndPassword(email, password)
+        await updateProfile({ displayName: name })
+        console.log('updated profile')
+        navigate('/home')
+
     }
     return (
         <div className='register__form'>
@@ -49,7 +60,7 @@ const Register = () => {
                 >
                     Accept Genius Car Terms All Condition
                 </label>
-                <input disabled={!agree} className='btn btn-primary' type="submit" value="Submit" />
+                <input disabled={!agree} className='btn btn-primary' type="submit" value="Register" />
 
             </form>
             <p>Already have you account?
