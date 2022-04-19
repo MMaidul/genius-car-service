@@ -1,16 +1,14 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import './About.css';
 
-const About = () => {
+const PageTitle = ({ title }) => {
     return (
         <div>
             <Helmet>
-                <title>About Genius Car Service</title>
+                <title>{title} Genius Car Service</title>
             </Helmet>
-            <h2>This about component</h2>
         </div>
     );
 };
 
-export default About;
+export default PageTitle;
